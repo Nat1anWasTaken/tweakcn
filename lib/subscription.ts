@@ -22,42 +22,11 @@ export async function getMyActiveSubscription(
 
 export async function validateSubscriptionAndUsage(userId: string): Promise<SubscriptionCheck> {
   try {
-    const [activeSubscription, requestsUsed] = await Promise.all([
-      getMyActiveSubscription(userId),
-      getMyAllTimeRequestCount(userId),
-    ]);
-
-    const isSubscribed =
-      !!activeSubscription &&
-      activeSubscription?.productId === process.env.NEXT_PUBLIC_TWEAKCN_PRO_PRODUCT_ID;
-
-    if (isSubscribed) {
-      return {
-        canProceed: true,
-        isSubscribed: true,
-        requestsUsed,
-        requestsRemaining: Infinity, // Unlimited for subscribers
-      };
-    }
-
-    const requestsRemaining = Math.max(0, AI_REQUEST_FREE_TIER_LIMIT - requestsUsed);
-    const canProceed = requestsUsed < AI_REQUEST_FREE_TIER_LIMIT;
-
-    if (!canProceed) {
-      return {
-        canProceed: false,
-        isSubscribed: false,
-        requestsUsed,
-        requestsRemaining: 0,
-        error: `You've reached your free limit of ${AI_REQUEST_FREE_TIER_LIMIT} requests. Please upgrade to continue.`,
-      };
-    }
-
     return {
       canProceed: true,
-      isSubscribed: false,
-      requestsUsed,
-      requestsRemaining,
+      isSubscribed: true,
+      requestsUsed: 0,
+      requestsRemaining: Infinity,
     };
   } catch (error) {
     console.error("Error validating subscription:", error);

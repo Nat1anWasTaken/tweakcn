@@ -15,7 +15,7 @@ const google = createGoogleGenerativeAI({
   apiKey: process.env.GOOGLE_API_KEY,
 });
 
-const model = google("gemini-2.5-pro");
+const model = google("gemini-2.5-flash");
 
 const ratelimit = new Ratelimit({
   redis: kv,
