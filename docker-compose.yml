@@ -13,7 +13,7 @@ services:
     depends_on:
       - db
     command: >
-      sh -c "pnpm exec drizzle-kit push && pnpm start"
+      sh -c "corepack enable && pnpm exec drizzle-kit push && pnpm start"
     networks:
       - tweakcn
 
