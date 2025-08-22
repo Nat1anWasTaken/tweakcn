@@ -7,13 +7,12 @@ services:
       - "3000:3000"
     env_file:
       - .env.local
+    environment:
+      - POLAR_WEBHOOK_SECRET=local-development-secret-key
     depends_on:
       - db
-    volumes:
-      - .:/app
-      - /app/node_modules
     command: >
-      sh -c "pnpm dlx drizzle-kit push && pnpm run start"
+      sh -c "pnpm exec drizzle-kit push && pnpm start"
 
   db:
     image: postgres:15

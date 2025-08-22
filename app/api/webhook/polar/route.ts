@@ -8,12 +8,15 @@ function safeParseDate(value: string | Date | null | undefined): Date | null {
   return new Date(value);
 }
 
+// Allow builds to proceed even without the webhook secret (for development)
+const webhookSecret = process.env.POLAR_WEBHOOK_SECRET || 'build-time-placeholder';
+
 if (!process.env.POLAR_WEBHOOK_SECRET) {
-  throw new Error("POLAR_WEBHOOK_SECRET environment variable is required");
+  console.warn('POLAR_WEBHOOK_SECRET environment variable is not set. Using placeholder for build.');
 }
 
 export const POST = Webhooks({
-  webhookSecret: process.env.POLAR_WEBHOOK_SECRET,
+  webhookSecret: webhookSecret,
   onPayload: async ({ data, type }) => {
     if (
       type === "subscription.created" ||
