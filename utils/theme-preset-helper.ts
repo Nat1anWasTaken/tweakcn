@@ -1,6 +1,6 @@
 import { defaultThemeState } from "../config/theme";
 import { ThemeStyles } from "../types/theme";
-import { useThemePresetStore } from "../store/theme-preset-store";
+import { defaultPresets } from "../utils/theme-presets";
 
 export function getPresetThemeStyles(name: string): ThemeStyles {
   const defaultTheme = defaultThemeState.styles;
@@ -8,8 +8,8 @@ export function getPresetThemeStyles(name: string): ThemeStyles {
     return defaultTheme;
   }
 
-  const store = useThemePresetStore.getState();
-  const preset = store.getPreset(name);
+  // Use only default presets during build time to avoid database connection
+  const preset = defaultPresets[name];
   if (!preset) {
     return defaultTheme;
   }

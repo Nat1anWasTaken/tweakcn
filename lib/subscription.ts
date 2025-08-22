@@ -1,10 +1,8 @@
 "use server";
 
-import { getMyAllTimeRequestCount } from "@/actions/ai-usage";
 import { SubscriptionRequiredError } from "@/types/errors";
 import { SubscriptionCheck } from "@/types/subscription";
 import { NextRequest } from "next/server";
-import { AI_REQUEST_FREE_TIER_LIMIT } from "./constants";
 import { getCurrentUserId } from "./shared";
 import { db } from "@/db";
 import { subscription } from "@/db/schema";
@@ -20,7 +18,7 @@ export async function getMyActiveSubscription(
   return sub[0];
 }
 
-export async function validateSubscriptionAndUsage(userId: string): Promise<SubscriptionCheck> {
+export async function validateSubscriptionAndUsage(_userId: string): Promise<SubscriptionCheck> {
   try {
     return {
       canProceed: true,
