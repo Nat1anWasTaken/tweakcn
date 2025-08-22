@@ -13,7 +13,7 @@ services:
       - .:/app
       - /app/node_modules
     command: >
-      sh -c "npx drizzle-kit push && npm run start"
+      sh -c "pnpm dlx drizzle-kit push && pnpm run start"
 
   db:
     image: postgres:15
