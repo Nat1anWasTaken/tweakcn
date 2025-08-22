@@ -8,23 +8,31 @@ services:
     env_file:
       - .env.local
     environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/tweakcn
       - POLAR_WEBHOOK_SECRET=local-development-secret-key
     depends_on:
       - db
     command: >
       sh -c "pnpm exec drizzle-kit push && pnpm start"
+    networks:
+      - tweakcn
 
   db:
     image: postgres:15
     restart: always
+    hostname: postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: tweakcn
-    ports:
-      - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql/data
+    networks:
+      - tweakcn
 
 volumes:
   pgdata:
+
+networks:
+  tweakcn:
+    driver: bridge
